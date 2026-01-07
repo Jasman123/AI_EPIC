@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Virtual env
+.venv/
+venv/
+
+# Environment variables
+.env
+
+# Vector DB
+chroma_db/
+
+# Documents (PDFs)
+documents/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
