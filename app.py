@@ -45,21 +45,15 @@ if user_input:
     st.session_state.messages.append({"role": "assistant", "content": assistant_reply})
     with st.chat_message("assistant"):
         st.markdown(assistant_reply)
-
-    if st.button("Play Response"):
-        if not st.session_state.messages or st.session_state.messages[-1]["role"] != "assistant":
-            st.warning("Please ask a question first!")
-        else:
-            assistant_reply = st.session_state.messages[-1]["content"]
-            tts = gTTS(text=assistant_reply, lang="en")
-            with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp_file:
-                tts.save(tmp_file.name)
-                audio_path = tmp_file.name
-            with open(audio_path, "rb") as audio_file:
-                st.audio(audio_file.read(), format="audio/mp3")
-            os.remove(audio_path)
-
-
+    if st.session_state.language == "en":
+        assistant_reply = st.session_state.messages[-1]["content"]
+        tts = gTTS(text=assistant_reply, lang="en")
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp_file:
+            tts.save(tmp_file.name)
+            audio_path = tmp_file.name
+        with open(audio_path, "rb") as audio_file:
+            st.audio(audio_file.read(), format="audio/mp3")
+        os.remove(audio_path)
 
 
         # st.success("✅ Text berhasil diubah menjadi audio!")
