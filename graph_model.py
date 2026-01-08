@@ -2,6 +2,7 @@ from typing import List
 from langgraph.graph import StateGraph, START, END, MessagesState
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_core.prompts import PromptTemplate
+from langgraph.checkpoint.memory import MemorySaver
 
 from build_vectore import get_vector_store
 from retriever import create_retriever
@@ -69,4 +70,5 @@ def build_graph():
     graph.add_edge("retrieve_documents", "generate_answer")
     graph.add_edge("generate_answer", END)
 
-    return graph.compile()
+    memory = MemorySaver()
+    return graph.compile(checkpointer=memory)
