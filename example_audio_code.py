@@ -1,38 +1,38 @@
 import streamlit as st
-from faster_whisper import WhisperModel
+import speech_recognition as sr
 import tempfile
-from gtts import gTTS
 import os
 
-st.title("🎙 Audio ↔ Text ↔ Audio (Light Version)")
+st.set_page_config(page_title="Audio to Text", page_icon="🎤")
+st.title("🎤 Audio to Text (Google SpeechRecognition)")
 
-# --- Upload Audio & Transcribe ---
-audio_file = st.file_uploader("Upload audio (wav/mp3)", type=["wav", "mp3"])
+r = sr.Recognizer()
+
+audio_file = st.file_uploader(
+    "Upload or record audio",
+    type=["wav"]
+)
 
 if audio_file:
-    # Simpan sementara audio
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp_file:
-        tmp_file.write(audio_file.read())
-        temp_audio_path = tmp_file.name
+    st.audio(audio_file)
 
-    st.info(f"File audio disimpan sementara: {temp_audio_path}")
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
+        tmp.write(audio_file.read())
+        audio_path = tmp.name
 
-    # Load Whisper model (CPU, faster-whisper)
-    model_size = "tiny"  # tiny, base, small, medium, large
-    model = WhisperModel(model_size, device="cpu")  # no torch needed
+    with st.spinner("Transcribing..."):
+        with sr.AudioFile(audio_path) as source:
+            audio = r.record(source)
 
-    # Transcribe audio
-    segments, info = model.transcribe(temp_audio_path)
-    text_output = " ".join([segment.text for segment in segments])
+        try:
+            text = r.recognize_google(audio, language="id-ID")
+            st.success("Transcription completed")
+            st.text_area("Result", text, height=200)
 
-    st.subheader("📝 Transkripsi Audio:")
-    st.write(text_output)
+        except sr.UnknownValueError:
+            st.error("Could not understand audio")
 
-    # --- Text to Speech (gTTS) ---
-    if st.button("Convert to Audio"):
-        tts = gTTS(text=text_output, lang="id")  # lang="en" for English
-        tts_file = "tts_output.mp3"
-        tts.save(tts_file)
+        except sr.RequestError as e:
+            st.error(f"Google API error: {e}")
 
-        st.audio(tts_file, format="audio/mp3")
-        st.success("✅ Text berhasil diubah menjadi audio!")
+    os.remove(audio_path)
