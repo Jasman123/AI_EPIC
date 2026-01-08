@@ -1,0 +1,134 @@
+RAG EPIC Project - PDF Chatbot with Text & Audio
+
+Author: Jasman Framework: Streamlit Concept: Retrieval-Augmented
+Generation (RAG)
+
+  -------------------------------------------------
+  1. Project Overview
+  -------------------------------------------------
+  This project is a PDF-based chatbot using RAG
+  architecture. Users can: - Ask questions about
+  PDF content - Get contextual answers from
+  documents - Hear responses via Text-to-Speech
+  (TTS)
+
+  -------------------------------------------------
+
+2. Features
+
+-   PDF ingestion & vector storage
+-   Conversational chat interface
+-   Context-aware answers (RAG)
+-   Text-to-Speech output using gTTS
+-   Session-based chat history
+-   Streamlit UI
+
+  -------------------------------------------------
+  3. Project Structure
+  -------------------------------------------------
+AI_EPIC/
+│
+├── app.py                     # Streamlit UI (chat, text input, audio output)
+│
+├── graph_model.py             # RAG graph orchestration (LangGraph / LangChain)
+├── retriever.py               # Vector retrieval logic
+├── llm.py                     # LLM configuration & prompt handling
+│
+├── build_vectore.py            # Build embeddings & vector store
+├── generate_pdf.py             # Utility to generate / preprocess PDFs
+│
+├── documents/                  # Source PDF documents
+├── chroma_db/                  # Persisted Chroma vector database
+│
+├── .github/
+│   └── workflows/
+│       ├── ci.yml              # Continuous Integration (lint, test)
+│       └── cd.yml              # Continuous Deployment pipeline
+│
+├── Dockerfile                  # Container build (Cloud / local)
+├── .dockerignore               # Ignore unnecessary files in Docker image
+│
+├── requirements.txt            # Python dependencies
+├── .env                        # Environment variables (DO NOT COMMIT)
+├── .gitignore                  # Git ignore rules
+│
+├── .venv/                      # Local virtual environment (ignored)
+└── __pycache__/                # Python cache (ignored)
+
+
+  -------------------------------------------------
+
+4. Requirements
+
+-   Python 3.9 or higher
+-   pip
+-   Virtual environment (recommended)
+
+  -------------------------------------------------
+  5. Installation
+  -------------------------------------------------
+  1. Clone repository git clone
+  https://github.com/Jasman123/AI_EPIC.git cd
+  AI_EPIC
+
+  2. Create virtual environment python -m venv
+  .venv
+
+  3. Activate virtual environment Windows: .venv
+  Mac/Linux: source .venv/bin/activate
+
+  4. Install dependencies pip install -r
+  requirements.txt
+  -------------------------------------------------
+
+6. Environment Variables
+
+Create .env file in root directory:
+
+OPENAI_API_KEY=your_api_key_here
+
+  -------------------------------------------------
+  7. Running the Application
+  -------------------------------------------------
+  Run Streamlit app:
+
+  streamlit run app.py
+
+  Open browser: http://localhost:8501
+  -------------------------------------------------
+
+8. How It Works (RAG Flow)
+
+1.  PDF documents are loaded and split
+2.  Text chunks stored in vector database
+3.  User question → embedding search
+4.  Relevant context retrieved
+5.  LLM generates grounded answer
+6.  Answer converted to audio (TTS)
+
+  -------------------------------------------------
+  9. Text-to-Speech
+  -------------------------------------------------
+  - Uses Google Text-to-Speech (gTTS) - Audio
+  generated as temporary MP3 - Played directly in
+  Streamlit
+
+  -------------------------------------------------
+
+10. Notes
+
+-   Internet required for LLM & TTS
+-   Audio output supports English (default)
+-   Keep PDF size reasonable for performance
+
+  -------------------------------------------------
+  11. Future Improvements
+  -------------------------------------------------
+  - Multilingual TTS - Live microphone input -
+  Docker deployment - Cloud deployment (Cloud Run)
+
+  -------------------------------------------------
+
+12. License
+
+Free for learning & portfolio use
