@@ -3,8 +3,10 @@ import os
 from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
 from langchain_chroma import Chroma
 from generate_pdf import load_pdf
+from pathlib import Path
+BASE_DIR = Path(__file__).resolve().parent
 
-PDF_PATH = "documents\\Big data analytics—A review of data-mining models for small.pdf"
+PDF_PATH = BASE_DIR / "documents" / "big_data_analytics.pdf"
 CHROMA_DIR = "chroma_db"
 COLLECTION_NAME = "pdf_docs"
 
@@ -24,7 +26,6 @@ def build_vector_store(documents, embeddings):
         collection_name=COLLECTION_NAME,
         persist_directory=CHROMA_DIR
     )
-    vector_store.persist()
     return vector_store
 
 

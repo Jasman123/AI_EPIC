@@ -10,10 +10,10 @@ venv/
 .env
 
 # Vector DB
-chroma_db/
+#chroma_db/
 
 # Documents (PDFs)
-documents/
+#documents/
 
 # OS / IDE
 .DS_Store
